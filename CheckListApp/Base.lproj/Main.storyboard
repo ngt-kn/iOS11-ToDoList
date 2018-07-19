@@ -79,7 +79,7 @@
         <!--Add Item-->
         <scene sceneID="P6b-qi-GPV">
             <objects>
-                <tableViewController id="RjY-4e-ceO" customClass="AddItemTableViewController" customModule="CheckListApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="RjY-4e-ceO" customClass="ItemDetailView" customModule="CheckListApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="dJJ-c7-Trb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

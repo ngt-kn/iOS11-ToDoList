@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol AddItemTableViewControllerDelegate: class {
-    func addItemTableViewControllerDidCancel(_ controller: AddItemTableViewController)
-    func addItemTableViewController(_ controller: AddItemTableViewController, didFinishAdding item: CheckListItem)
-    func addItemTableViewController(_ controller: AddItemTableViewController, didFinishEditing item: CheckListItem)
+protocol ItemDetailViewProtocol: class {
+    func itemDetailViewControllerDidCancel(_ controller: ItemDetailView)
+    func itemDetailViewController(_ controller: ItemDetailView, didFinishAdding item: CheckListItem)
+    func itemDetailViewController(_ controller: ItemDetailView, didFinishEditing item: CheckListItem)
 }
 
-class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
+class ItemDetailView: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
@@ -22,7 +22,7 @@ class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
     
     var itemToEdit: CheckListItem?
     
-    weak var delegate: AddItemTableViewControllerDelegate?
+    weak var delegate: ItemDetailViewProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,8 +35,7 @@ class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
         }
 
     }
-    
-    
+        
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return nil
     }
@@ -47,18 +46,18 @@ class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
 
     @IBAction func cancel() {
         navigationController?.popViewController(animated: true)
-        delegate?.addItemTableViewControllerDidCancel(self)
+        delegate?.itemDetailViewControllerDidCancel(self)
     }
     
     @IBAction func done() {
         if let itemToEdit = itemToEdit {
             itemToEdit.text = textField.text!
-            delegate?.addItemTableViewController(self, didFinishEditing: itemToEdit)
+            delegate?.itemDetailViewController(self, didFinishEditing: itemToEdit)
         } else {
             let item  = CheckListItem()
             item.text = textField.text!
             item.checked = false
-            delegate?.addItemTableViewController(self, didFinishAdding: item)
+            delegate?.itemDetailViewController(self, didFinishAdding: item)
         }
     }
     
