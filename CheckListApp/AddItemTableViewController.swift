@@ -11,6 +11,7 @@ import UIKit
 protocol AddItemTableViewControllerDelegate: class {
     func addItemTableViewControllerDidCancel(_ controller: AddItemTableViewController)
     func addItemTableViewController(_ controller: AddItemTableViewController, didFinishAdding item: CheckListItem)
+    func addItemTableViewController(_ controller: AddItemTableViewController, didFinishEditing item: CheckListItem)
 }
 
 class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
@@ -19,12 +20,19 @@ class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
     @IBOutlet weak var doneBarButton: UIBarButtonItem!
     
+    var itemToEdit: CheckListItem?
+    
     weak var delegate: AddItemTableViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
-    
+        
+        if let item = itemToEdit {
+            title = "Edit Item"
+            textField.text = item.text
+            doneBarButton.isEnabled = true
+        }
 
     }
     
@@ -43,10 +51,15 @@ class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func done() {
-        let item  = CheckListItem()
-        item.text = textField.text!
-        item.checked = false
-        delegate?.addItemTableViewController(self, didFinishAdding: item)
+        if let itemToEdit = itemToEdit {
+            itemToEdit.text = textField.text!
+            delegate?.addItemTableViewController(self, didFinishEditing: itemToEdit)
+        } else {
+            let item  = CheckListItem()
+            item.text = textField.text!
+            item.checked = false
+            delegate?.addItemTableViewController(self, didFinishAdding: item)
+        }
     }
     
     // Allows copy and paste text in field
