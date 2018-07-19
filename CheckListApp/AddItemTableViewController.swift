@@ -8,11 +8,18 @@
 
 import UIKit
 
+protocol AddItemTableViewControllerDelegate: class {
+    func addItemTableViewControllerDidCancel(_ controller: AddItemTableViewController)
+    func addItemTableViewController(_ controller: AddItemTableViewController, didFinishAdding item: CheckListItem)
+}
+
 class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
     @IBOutlet weak var doneBarButton: UIBarButtonItem!
+    
+    weak var delegate: AddItemTableViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +39,14 @@ class AddItemTableViewController: UITableViewController, UITextFieldDelegate {
 
     @IBAction func cancel() {
         navigationController?.popViewController(animated: true)
+        delegate?.addItemTableViewControllerDidCancel(self)
     }
     
     @IBAction func done() {
-        navigationController?.popViewController(animated: true)
-        print("contents of textfield \(textField.text)")
+        let item  = CheckListItem()
+        item.text = textField.text!
+        item.checked = false
+        delegate?.addItemTableViewController(self, didFinishAdding: item)
     }
     
     // Allows copy and paste text in field
